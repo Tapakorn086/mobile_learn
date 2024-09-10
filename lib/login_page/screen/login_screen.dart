@@ -1,3 +1,4 @@
+import 'package:ass1/reigster_page/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -128,8 +129,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
                 child: const Text('Register'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterScreen()),
+                  );
+                },
               ),
             ],
           ),
