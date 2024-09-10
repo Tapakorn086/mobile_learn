@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -9,7 +10,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreen extends State<RegisterScreen> {
   final _nameController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _birthrateController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -39,8 +40,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   String? _validateConfirmPassword(String? value) {
-    if (value == null || value.isEmpty || value != _passwordController.text) {
-      return 'Passwords do not match';
+    if (value != _passwordController.text) {
+      return 'Passwords not match';
+    } else if (value == null || value.isEmpty) {
+      return 'Please enter a password';
     }
     return null;
   }
@@ -103,11 +106,28 @@ class _RegisterScreen extends State<RegisterScreen> {
                       padding: EdgeInsets.only(bottom: 20.0),
                     ),
                     TextFormField(
-                      controller: _ageController,
+                      controller: _birthrateController,
                       decoration: const InputDecoration(
-                          labelText: 'Age',
-                          prefixIcon: Icon(Icons.apps_outage),
-                          border: OutlineInputBorder()),
+                        labelText: 'Birthrate',
+                        prefixIcon: Icon(Icons.cake),
+                        border: OutlineInputBorder(),
+                      ),
+                      readOnly:
+                          true, // This will prevent the user from typing in the field
+                      onTap: () async {
+                        final DateTime? picked = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+                        if (picked != null) {
+                          setState(() {
+                            _birthrateController.text =
+                                DateFormat('yyyy-MM-dd').format(picked);
+                          });
+                        }
+                      },
                     ),
                     const Padding(
                       padding: EdgeInsets.only(bottom: 20.0),
