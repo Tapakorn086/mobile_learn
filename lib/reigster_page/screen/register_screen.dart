@@ -10,7 +10,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreen extends State<RegisterScreen> {
   final _nameController = TextEditingController();
-  final _birthrateController = TextEditingController();
+  final _ageController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -79,6 +79,17 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
+  // ฟังก์ชันคำนวณอายุจากวันเกิด
+  int _calculateAge(DateTime birthDate) {
+    DateTime today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+    return age;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,103 +97,103 @@ class _RegisterScreen extends State<RegisterScreen> {
         title: const Text('Register'),
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _form,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _form,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  validator: _validateName,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    prefixIcon: Icon(Icons.people),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // ฟิลด์ Age
+                TextFormField(
+                  controller: _ageController,
+                  decoration: const InputDecoration(
+                    labelText: 'Age',
+                    prefixIcon: Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(),
+                  ),
+                  readOnly: true,
+                  onTap: () async {
+                    final DateTime today = DateTime.now();
+                    final DateTime eighteenYearsAgo =
+                        DateTime(today.year - 18, today.month, today.day);
+
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: eighteenYearsAgo,
+                      firstDate: DateTime(1950),
+                      lastDate: eighteenYearsAgo,
+                    );
+                    if (picked != null) {
+                      setState(() {
+                        int age = _calculateAge(picked);
+                        _ageController.text = age.toString(); // แสดงอายุ
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                TextFormField(
+                  controller: _emailController,
+                  validator: _validateEmail,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                TextFormField(
+                  controller: _passwordController,
+                  validator: _validatePassword,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  validator: _validateConfirmPassword,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    prefixIcon: Icon(Icons.lock),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextFormField(
-                      controller: _nameController,
-                      validator: _validateName,
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                        prefixIcon: Icon(Icons.people),
-                        border: OutlineInputBorder(),
-                      ),
+                    ElevatedButton(
+                      onPressed: _validate,
+                      child: const Text('Register'),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                    ),
-                    TextFormField(
-                      controller: _birthrateController,
-                      decoration: const InputDecoration(
-                        labelText: 'Birthrate',
-                        prefixIcon: Icon(Icons.cake),
-                        border: OutlineInputBorder(),
-                      ),
-                      readOnly:
-                          true, // This will prevent the user from typing in the field
-                      onTap: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                        );
-                        if (picked != null) {
-                          setState(() {
-                            _birthrateController.text =
-                                DateFormat('yyyy-MM-dd').format(picked);
-                          });
-                        }
-                      },
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                    ),
-                    TextFormField(
-                      controller: _emailController,
-                      validator: _validateEmail,
-                      decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder()),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                    ),
-                    TextFormField(
-                      controller: _passwordController,
-                      validator: _validatePassword,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                    ),
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      validator: _validateConfirmPassword,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Confirm Password',
-                        prefixIcon: Icon(Icons.lock),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: _validate,
-                          child: const Text(
-                            'register',
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
-              ))),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
