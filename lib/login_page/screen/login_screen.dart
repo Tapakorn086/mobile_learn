@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Logo Image
                       Padding(
@@ -103,7 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 180.0,
                         ),
                       ),
+                      const SizedBox(height: 20),
                       // Email Field
+                      const Text(
+                        "Email",
+                        textAlign: TextAlign.start,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
@@ -111,17 +116,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: _validateEmail,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            labelText: 'Email',
                             prefixIcon: const Icon(Icons.email),
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
                         ),
                       ),
                       // Password Field
+                      const Text(
+                        "Password",
+                        textAlign: TextAlign.start,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
@@ -129,12 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: _validatePassword,
                           obscureText: true,
                           decoration: InputDecoration(
-                            labelText: 'Password',
                             prefixIcon: const Icon(Icons.lock),
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
                         ),
@@ -156,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -169,18 +176,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               );
                             },
-                            child: const Text(
-                              'Register',
-                              style: TextStyle(
-                                  color: Color.fromARGB(138, 255, 255, 255),
+                            child: const Text('Register',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 255, 255, 255),
                                   fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
                                   fontSize: 16,
                                   fontFamily: 'Poppins',
-                                  decorationColor:
-                                      Color.fromARGB(138, 255, 255, 255)),
-                            ),
+                                )),
                           ),
+                          const SizedBox(height: 20),
                         ],
                       )
                     ],
